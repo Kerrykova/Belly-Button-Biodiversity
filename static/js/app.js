@@ -3,27 +3,40 @@ function buildMetadata(sample) {
   // @TODO: Complete the following function that builds the metadata panel
 
   // Use `d3.json` to fetch the metadata for a sample
+  var metadata;
+  var panel;
+
+  d3.json(`/metadata/${sample}`).then(function(response){
+    console.log(response);
+    metasample = response;
     // Use d3 to select the panel with id of `#sample-metadata`
-
+    panel = d3.select("#sample-metadata");
     // Use `.html("") to clear any existing metadata
-
+    d3.select("#sample-metadata").html("");
     // Use `Object.entries` to add each key and value pair to the panel
     // Hint: Inside the loop, you will need to use d3 to append new
     // tags for each key-value in the metadata.
-
+    Object.entries(metasample).forEach(([key, value]) => {
+        var cell = panel.append("div");
+        cell.text(`${key}: ${value}`);
+    });
     // BONUS: Build the Gauge Chart
     // buildGauge(data.WFREQ);
+  });
 }
 
 function buildCharts(sample) {
-
+  var sampleData;
   // @TODO: Use `d3.json` to fetch the sample data for the plots
-
+  d3.json(`/samples/${sample}`).then(function(response){
     // @TODO: Build a Bubble Chart using the sample data
-
+    sampleData = response;
     // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
     // otu_ids, and labels (10 each).
+    const top = sampleData.sample_values.slice(0, 11);
+    console.log(top);
+  });
 }
 
 function init() {
